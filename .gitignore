@@ -1,0 +1,13 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editoren
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build artefacts (we ship the source directly)
+node_modules/
+*.log
