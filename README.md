@@ -51,12 +51,14 @@ Custom Lovelace Dashboard Card fuer die **[TomTuT Pool Dosing Vigipool Integrati
 
 ### Manuelle Installation
 
-1. `tomtut-pool-dosing-vigipool-card.js` und `dosieranlage.png` herunterladen
+1. `tomtut-pool-dosing-vigipool-card.js` herunterladen
 2. Nach `config/www/community/tomtut-pool-dosing-vigipool-card/` in der Home Assistant Instanz kopieren
 3. In HA: **Einstellungen → Dashboards → Ressourcen** → Ressource hinzufuegen:
    - URL: `/local/community/tomtut-pool-dosing-vigipool-card/tomtut-pool-dosing-vigipool-card.js`
    - Ressourcentyp: **JavaScript-Modul**
 4. Browser neu laden
+
+> Das Hintergrundbild (`dosieranlage.png`) wird automatisch von der Integration ausgeliefert (Endpunkt `/api/tomtut_pool_dosing_vigipool/static/dosieranlage.png`) — es muss nicht separat heruntergeladen oder nach `www/` kopiert werden.
 
 ---
 
