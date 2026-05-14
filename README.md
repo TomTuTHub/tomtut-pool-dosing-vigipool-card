@@ -72,7 +72,7 @@ Die Card im Dashboard-Editor hinzufuegen: **Karte hinzufuegen** → **TomTuT Poo
 |---|---|---|
 | `device_name` | Ja* | Name der Dosieranlage in HA (z.B. `Orpheo VP Pool Dosieranlage`) — daraus wird der Entity-Praefix abgeleitet |
 | `entity_prefix` | Ja* | Alternativ direkt: Entity-Praefix (z.B. `sensor.orpheo_vp_pool_dosieranlage`) |
-| `image_variant` | Nein | Bildvariante: `dark` (Standard) |
+| `image_variant` | Nein | Bildvariante: `weiss`, `schwarz` oder `transparent` (Standard) |
 | `plug_entity_ph` | Nein | Entity-ID einer Steckdose fuer die pH-Pumpe |
 | `plug_entity_rx` | Nein | Entity-ID einer Steckdose fuer die Redox-/Chlor-Pumpe |
 | `show_cloud` | Nein | Cloud-Badge ein/aus (Standard: ein) |
