@@ -163,7 +163,6 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
 
                 <div class="settings-group">
                   <h4>Betriebsmodus</h4>
-                  ${this._switchRow("Spa-Modus","_spa_modus","mdi:hot-tub")}
                   ${this._switchRow("Winter-Modus","_winter_modus","mdi:snowflake")}
                 </div>
               </div>
