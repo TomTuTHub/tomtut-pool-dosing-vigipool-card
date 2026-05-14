@@ -352,14 +352,15 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
     .settings-toggle input { display: none; }
     .slider-track {
       position: absolute; inset: 0;
-      background: rgba(255,255,255,0.18);
+      background: var(--switch-unchecked-track-color, rgba(120,120,128,0.45));
       border-radius: 12px; transition: background 0.2s;
     }
     .slider-track:before {
       content: ""; position: absolute;
       top: 2px; left: 2px;
       width: 20px; height: 20px;
-      background: #fff; border-radius: 50%;
+      background: var(--switch-unchecked-button-color, #fff); border-radius: 50%;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.25);
       transition: transform 0.2s;
     }
     .settings-toggle input:checked + .slider-track {
