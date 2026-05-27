@@ -5,6 +5,8 @@
 [![HA Version](https://img.shields.io/badge/Home%20Assistant-2026.3.0%2B-blue)](https://www.home-assistant.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
+![Preview](preview.png)
+
 Custom Lovelace Dashboard Card fuer die **[TomTuT Pool Dosing Vigipool Integration](https://github.com/TomTuTHub/tomtut-pool-dosing-vigipool)** (Vigipool Orpheo VP — Phileo VP + Oxeo VP). Zeigt pH-Wert, Redox-Wert, Pumpenstatus, Firmware-Version, Wasserfluss und ein Settings-Overlay (Sollwerte / Behaelter / Restmenge / Modi) an.
 
 > **Disclaimer:** Dieses Projekt ist nicht affiliiert mit Vigipool, CCEI oder Poolsana. Nutzung auf eigene Verantwortung.
