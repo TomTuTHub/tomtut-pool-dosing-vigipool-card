@@ -18,7 +18,6 @@ Custom Lovelace Dashboard Card fuer die **[TomTuT Pool Dosing Vigipool Integrati
 - **pH- und Redox-Werte** — Live-Anzeige der aktuellen Messwerte direkt auf der Card
 - **Animierter Wasserfluss** — Animierte Wellendarstellung, automatisch ausgegraut wenn Durchfluss aus
 - **Animierte Pumpen** — Drehen wenn die jeweilige Pumpe (pH / Chlor) aktiv injiziert
-- **Cloud-Badge** (oben links) — zeigt den Status der Cloud-Verbindung der Anlage
 - **Zahnrad-Badge** (oben rechts) — oeffnet ein Settings-Overlay mit allen R/W-Entities
   - Sollwerte (pH / ORP)
   - Behaeltergroessen (pH / Chlor)
@@ -45,11 +44,11 @@ Custom Lovelace Dashboard Card fuer die **[TomTuT Pool Dosing Vigipool Integrati
 
 ### Via HACS (empfohlen)
 
+Die Card ist im **HACS-Standardkatalog** — ein benutzerdefiniertes Repository ist nicht noetig.
+
 1. HACS in Home Assistant oeffnen
-2. **Frontend** → Drei-Punkte-Menue → **Benutzerdefinierte Repositories**
-3. Repository hinzufuegen: `https://github.com/TomTuTHub/tomtut-pool-dosing-vigipool-card` — Kategorie: **Dashboard**
-4. Nach **TomTuT Pool Dosing Vigipool Card** suchen und **Herunterladen**
-5. Browser neu laden
+2. Nach **TomTuT Pool Dosing Vigipool Card** suchen und **Herunterladen**
+3. Browser neu laden
 
 ### Manuelle Installation
 
@@ -72,12 +71,11 @@ Die Card im Dashboard-Editor hinzufuegen: **Karte hinzufuegen** → **TomTuT Poo
 
 | Option | Pflicht | Beschreibung |
 |---|---|---|
-| `device_name` | Ja* | Name der Dosieranlage in HA (z.B. `Orpheo VP Pool Dosieranlage`) — daraus wird der Entity-Praefix abgeleitet |
-| `entity_prefix` | Ja* | Alternativ direkt: Entity-Praefix (z.B. `sensor.orpheo_vp_pool_dosieranlage`) |
+| `device_name` | Ja* | Name der Dosieranlage in HA (z.B. `Orpheo VP Pool Dosieranlage`) — die Card sucht sich die passenden Entities selbst |
+| `entity_prefix` | Ja* | Nur noetig, wenn die Automatik daneben liegt: Entity-Praefix direkt setzen (z.B. `sensor.orpheo_vp_pool_dosieranlage`) |
 | `image_variant` | Nein | Bildvariante: `weiss`, `schwarz` oder `transparent` (Standard) |
 | `plug_entity_ph` | Nein | Entity-ID einer Steckdose fuer die pH-Pumpe |
 | `plug_entity_rx` | Nein | Entity-ID einer Steckdose fuer die Redox-/Chlor-Pumpe |
-| `show_cloud` | Nein | Cloud-Badge ein/aus (Standard: ein) |
 | `show_settings` | Nein | Zahnrad-Badge ein/aus (Standard: ein) |
 
 \* Mindestens eine der beiden Optionen `device_name` oder `entity_prefix` ist Pflicht.
@@ -97,6 +95,28 @@ Im visuellen Editor unter **Erweiterte Einstellungen** koennen alle Positionen, 
 
 ---
 
+## Wenn die Card "Sensor ... nicht gefunden" meldet
+
+Die Card leitet den Entity-Praefix aus dem **Namen** der Dosieranlage ab und prueft ihn gegen die
+tatsaechlich vorhandenen Entities. Findet sie nichts Passendes, sagt sie das — zusammen mit der
+Entity-ID, die sie erwartet hat.
+
+Meistens weicht die Entity-ID vom Namen ab, weil Home Assistant beim Umwandeln strenger ist
+(Umlaute werden transliteriert, Bindestriche/Punkte/Klammern werden zu `_`) oder weil nach einer
+Neuinstallation ein `_2` angehaengt wurde. Beides erkennt die Card inzwischen selbst. Bleibt die
+Meldung trotzdem stehen:
+
+1. **Entwicklerwerkzeuge → Zustaende** oeffnen und nach `_ph` filtern
+2. Die vollstaendige Entity-ID des pH-Sensors ablesen, z.B. `sensor.orpheo_vp_pool_dosieranlage_ph`
+3. Im Card-Editor unter **Entity-Praefix** alles **ohne** das abschliessende `_ph` eintragen —
+   hier also `sensor.orpheo_vp_pool_dosieranlage`
+
+Zeigt die Entity dort zwar existiert, aber `unavailable` oder `unknown` an, liegt es nicht an der
+Card: dann empfaengt die Integration selbst gerade keine Daten — die Card meldet in dem Fall
+"Anlage offline".
+
+---
+
 ## Verwendete Entities
 
 Die Card erwartet folgende Entity-Suffixe (relativ zum `entity_prefix`):
@@ -109,7 +129,6 @@ Die Card erwartet folgende Entity-Suffixe (relativ zum `entity_prefix`):
 | `binary_sensor.*_durchfluss` | Wasserdurchfluss aktiv |
 | `binary_sensor.*_ph_dosierpumpe` | pH-Pumpe aktiv |
 | `binary_sensor.*_chlor_dosierpumpe` | Chlor-Pumpe aktiv |
-| `binary_sensor.*_cloud_verbindung` | Cloud-Verbindung der Anlage |
 | `number.*_ph_sollwert` | pH-Sollwert (R/W) |
 | `number.*_orp_sollwert` | ORP-Sollwert (R/W) |
 | `number.*_ph_behaeltergroesse` | pH-Behaeltergroesse (R/W) |

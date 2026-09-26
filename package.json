@@ -1,0 +1,9 @@
+{
+  "name": "tomtut-pool-dosing-vigipool-card",
+  "private": true,
+  "type": "module",
+  "description": "Tests fuer die Lovelace-Card. Die Card selbst wird nicht gebaut - die ausgelieferte Datei ist tomtut-pool-dosing-vigipool-card.js im Wurzelverzeichnis.",
+  "scripts": {
+    "test": "node --test"
+  }
+}
