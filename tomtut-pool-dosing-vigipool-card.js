@@ -223,7 +223,7 @@ let $t=class extends at{setConfig(t){const c={...t};if(!c.device_name&&!c.entity
       letter-spacing: 0.3px;
       padding: 9px 12px 9px 12px;
       text-align: center;
-      border-radius: 12px 12px 0 0;
+      border-radius: var(--ha-card-border-radius, 12px) var(--ha-card-border-radius, 12px) 0 0;
       display: flex; align-items: center; justify-content: center; gap: 8px;
       --mdc-icon-size: 20px;
     }
