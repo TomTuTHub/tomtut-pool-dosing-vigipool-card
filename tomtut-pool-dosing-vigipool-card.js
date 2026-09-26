@@ -51,10 +51,55 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
- */function ut(t){return dt({...t,state:!0,attribute:!1})}const _t={water_top:53,water_height:10,water_width:94,water_center:50,water_speed:100,pump_left_top:7,pump_right_top:7,pump_left_x:21,pump_right_x:15,pump_left_size:9,pump_right_size:9,pump_speed:100,value_bottom:4,value_ph_x:35,value_rx_x:30,value_scale:100,firmware_top:18,firmware_left:50,plug_ph_top:12,plug_ph_left:3,plug_rx_top:12,plug_rx_right:3},xt={type1:{water_top:79,water_height:14,water_width:100,water_center:50,water_speed:16,water_direction:"right",water_inactive:"gray",pump_left_size:9,pump_style:"fan",pump_left_x:34.5,pump_left_top:25,pump_right_size:9,pump_right_x:33.5,pump_right_top:24.5,pump_speed:30,firmware_top:7,firmware_box:true,firmware_color:"white",firmware_left:51,firmware_scale:95,plug_ph_top:28,plug_ph_left:15,plug_rx_top:28,plug_rx_right:15,value_box:true,value_labels:true,value_color:"white",value_scale:85,value_rx_x:32,value_ph_x:33,value_bottom:23}},gt={weiss:"/api/tomtut_pool_dosing_vigipool/static/dosieranlage_weiss.png",schwarz:"/api/tomtut_pool_dosing_vigipool/static/dosieranlage_schwarz.png",transparent:"/api/tomtut_pool_dosing_vigipool/static/dosieranlage_transparent.png"},ft={arrow:'<path d="M20,6 A14,14 0 1,1 8,14" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/><polygon points="5,8 11,14 3,16" fill="currentColor"/>',fan:'<circle cx="20" cy="20" r="3" fill="currentColor"/><path d="M20,17 Q20,6 12,6 Q4,6 6,14 Q8,17 20,17 Z" fill="currentColor" opacity="0.85"/><path d="M23,20 Q34,20 34,12 Q34,4 26,6 Q23,8 23,20 Z" fill="currentColor" opacity="0.85"/><path d="M20,23 Q20,34 28,34 Q36,34 34,26 Q32,23 20,23 Z" fill="currentColor" opacity="0.85"/><path d="M17,20 Q6,20 6,28 Q6,36 14,34 Q17,32 17,20 Z" fill="currentColor" opacity="0.85"/>',dots:'<circle cx="20" cy="8" r="3.5" fill="currentColor"/><circle cx="31" cy="14" r="3.5" fill="currentColor"/><circle cx="31" cy="26" r="3.5" fill="currentColor"/><circle cx="20" cy="32" r="3.5" fill="currentColor"/><circle cx="9" cy="26" r="3.5" fill="currentColor"/><circle cx="9" cy="14" r="3.5" fill="currentColor"/><circle cx="20" cy="20" r="4" fill="currentColor"/>'};let $t=class extends at{setConfig(t){const c={...t};if(c.device_name&&!c.entity_prefix){c.entity_prefix="sensor."+c.device_name.toLowerCase().replace(/\s+/g,"_")}if(!c.entity_prefix)throw new Error("device_name or entity_prefix is required");this._config={image_variant:"transparent",...c}}getCardSize(){return 6}_entity(t){return this.hass?.states[`${this._config.entity_prefix}${t}`]}_state(t){const s=this._entity(t)?.state;return s&&"unavailable"!==s&&"unknown"!==s?s:"—"}_binaryEntity(t){return this.hass?.states[`${this._config.entity_prefix.replace(/^sensor\./,"binary_sensor.")}${t}`]}_isOn(t){return"on"===this._binaryEntity(t)?.state}get _imagePath(){const e=this._config.image_variant??"transparent";return gt[e]??gt.transparent}get _flowActive(){return this._isOn("_durchfluss")}_v(t){return this._config[t]??(xt.type1??{})[t]??_t[t]}_togglePlug(e){const t=e?.currentTarget?.dataset?.entity||this._config.plug_entity_rx||this._config.plug_entity;t&&this.hass&&this.hass.callWS({type:"call_service",domain:t.split(".")[0],service:"toggle",target:{entity_id:t}})}_numId(s){return this._config.entity_prefix.replace(/^sensor\./,"number.")+s}_swId(s){return this._config.entity_prefix.replace(/^sensor\./,"switch.")+s}_biId(s){return this._config.entity_prefix.replace(/^sensor\./,"binary_sensor.")+s}_openSettings(e){e?.stopPropagation();this._settingsOpen=true;this.requestUpdate()}_closeSettings(e){e?.stopPropagation();this._settingsOpen=false;this.requestUpdate()}_stopProp(e){e.stopPropagation()}_setNumber(e){const t=e.currentTarget,id=t.dataset.entity,v=parseFloat(t.value);if(!isNaN(v))this.hass.callService("number","set_value",{entity_id:id,value:v})}_toggleSw(e){const t=e.currentTarget,id=t.dataset.entity,on=t.checked;this.hass.callService("switch",on?"turn_on":"turn_off",{entity_id:id})}_numberRow(label,suffix,icon){const id=this._numId(suffix),ent=this.hass.states[id];if(!ent)return V`<div class="settings-row missing"><span><ha-icon icon="${icon||"mdi:alert"}"></ha-icon>${label}</span><em>fehlt: ${id}</em></div>`;const a=ent.attributes||{},mn=a.min??0,mx=a.max??100,st=a.step??0.01,un=a.unit_of_measurement||"";return V`<div class="settings-row"><span class="settings-label"><ha-icon icon="${icon||"mdi:tune"}"></ha-icon>${label}</span><div class="settings-num"><input type="range" min="${mn}" max="${mx}" step="${st}" .value="${ent.state}" data-entity="${id}" @change="${this._setNumber}" @input="${this._setNumber}" /><input type="number" min="${mn}" max="${mx}" step="${st}" .value="${ent.state}" data-entity="${id}" @change="${this._setNumber}" /><span class="settings-unit">${un}</span></div></div>`}_switchRow(label,suffix,icon){const id=this._swId(suffix),ent=this.hass.states[id];if(!ent)return V`<div class="settings-row missing"><span><ha-icon icon="${icon||"mdi:alert"}"></ha-icon>${label}</span><em>fehlt: ${id}</em></div>`;const on=ent.state==="on";return V`<div class="settings-row"><span class="settings-label"><ha-icon icon="${icon||"mdi:toggle-switch-outline"}"></ha-icon>${label}</span><label class="settings-toggle"><input type="checkbox" .checked="${on}" data-entity="${id}" @change="${this._toggleSw}" /><span class="slider-track"></span></label></div>`}render(){if(!this._config||!this.hass)return I;const t=this._state("_ph"),e="—"!==t?parseFloat(t).toFixed(1).replace(".",","):"—",i=this._state("_orp_redox"),s="—"!==i?Math.round(parseFloat(i)).toString():"—",o=this._state("_ph_firmware"),r=this._isOn("_ph_dosierpumpe"),n=this._isOn("_chlor_dosierpumpe"),a=this._flowActive,l=ft[this._v("pump_style")??"arrow"],cPh=this._config.plug_entity_ph,hPh=!!cPh&&"on"===this.hass.states[cPh]?.state,cRx=this._config.plug_entity_rx||this._config.plug_entity,hRx=!!cRx&&"on"===this.hass.states[cRx]?.state,p=this._v("water_speed")??100,d=this._v("pump_speed")??100,u=Math.max(.01,p/100),_=1.8/u,g=2.4/u,f=1.4/u,$=0===p||!a?"paused":"running",m=1/Math.max(.01,d/100),v="left"===(this._v("water_direction")??"right"),y=this._v("value_color")??"white",w=!1!==(this._v("value_box")??!0),b=!1!==(this._v("value_labels")??!0),showCloud=!1!==(this._config.show_cloud??!0),showSettings=!1!==(this._config.show_settings??!0),cloudEnt=this.hass.states[this._biId("_cloud_verbindung")],cloudOn=cloudEnt?.state==="on",settingsOpen=!!this._settingsOpen,isOffline=t==="—";return V`
+ */function ut(t){return dt({...t,state:!0,attribute:!1})}const _t={water_top:53,water_height:10,water_width:94,water_center:50,water_speed:100,pump_left_top:7,pump_right_top:7,pump_left_x:21,pump_right_x:15,pump_left_size:9,pump_right_size:9,pump_speed:100,value_bottom:4,value_ph_x:35,value_rx_x:30,value_scale:100,firmware_top:18,firmware_left:50,plug_ph_top:12,plug_ph_left:3,plug_rx_top:12,plug_rx_right:3},xt={type1:{water_top:79,water_height:14,water_width:100,water_center:50,water_speed:16,water_direction:"right",water_inactive:"gray",pump_left_size:9,pump_style:"fan",pump_left_x:34.5,pump_left_top:25,pump_right_size:9,pump_right_x:33.5,pump_right_top:24.5,pump_speed:30,firmware_top:7,firmware_box:true,firmware_color:"white",firmware_left:51,firmware_scale:95,plug_ph_top:28,plug_ph_left:15,plug_rx_top:28,plug_rx_right:15,value_box:true,value_labels:true,value_color:"white",value_scale:85,value_rx_x:32,value_ph_x:33,value_bottom:23}},gt={weiss:"/api/tomtut_pool_dosing_vigipool/static/dosieranlage_weiss.png",schwarz:"/api/tomtut_pool_dosing_vigipool/static/dosieranlage_schwarz.png",transparent:"/api/tomtut_pool_dosing_vigipool/static/dosieranlage_transparent.png"},ft={arrow:'<path d="M20,6 A14,14 0 1,1 8,14" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/><polygon points="5,8 11,14 3,16" fill="currentColor"/>',fan:'<circle cx="20" cy="20" r="3" fill="currentColor"/><path d="M20,17 Q20,6 12,6 Q4,6 6,14 Q8,17 20,17 Z" fill="currentColor" opacity="0.85"/><path d="M23,20 Q34,20 34,12 Q34,4 26,6 Q23,8 23,20 Z" fill="currentColor" opacity="0.85"/><path d="M20,23 Q20,34 28,34 Q36,34 34,26 Q32,23 20,23 Z" fill="currentColor" opacity="0.85"/><path d="M17,20 Q6,20 6,28 Q6,36 14,34 Q17,32 17,20 Z" fill="currentColor" opacity="0.85"/>',dots:'<circle cx="20" cy="8" r="3.5" fill="currentColor"/><circle cx="31" cy="14" r="3.5" fill="currentColor"/><circle cx="31" cy="26" r="3.5" fill="currentColor"/><circle cx="20" cy="32" r="3.5" fill="currentColor"/><circle cx="9" cy="26" r="3.5" fill="currentColor"/><circle cx="9" cy="14" r="3.5" fill="currentColor"/><circle cx="20" cy="20" r="4" fill="currentColor"/>'};/* --- Entity-Praefix: HA-konformes Slugify + Aufloesung ueber die States ------
+ * Die Card hat den Praefix frueher aus dem Geraetenamen "gerechnet" (nur
+ * kleinschreiben + Leerzeichen zu "_"). Home Assistant slugifiziert anders
+ * (Umlaute werden transliteriert, jedes Nicht-Alphanumerische wird zu "_"),
+ * und bei Namenskollisionen haengt es "_2", "_3", ... an. Ergebnis: die Card
+ * suchte eine Entity, die es nicht gab, und meldete faelschlich "Anlage
+ * offline". Deshalb wird der Praefix jetzt an den echten States ueberprueft
+ * und notfalls ueber die Entity-Registry aufgeloest. */
+const PLATTFORM = "tomtut_pool_dosing_vigipool";
+const PH_SUFFIX = "_ph";
+function haSlugify(t) {
+  return String(t ?? "")
+    .replace(/ß/g, "ss")
+    .normalize("NFKD").replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
+}
+function aufloesenPrefix(config, hass) {
+  const states = hass?.states;
+  const explizit = config?.entity_prefix || null;
+  // Explizit gesetzter Praefix gewinnt - aber nur, wenn er auch wirklich traegt.
+  // So heilen sich Alt-Configs, in die der fruehere Editor einen kaputten
+  // Praefix geschrieben hat, beim naechsten Laden von selbst.
+  if (explizit && (!states || states[explizit + PH_SUFFIX])) return explizit;
+  const basis = config?.device_name ? "sensor." + haSlugify(config.device_name) : null;
+  if (!states) return explizit ?? basis;
+  if (basis && states[basis + PH_SUFFIX]) return basis;
+  const kandidaten = Object.keys(states)
+    .filter((id) => id.startsWith("sensor.") && id.endsWith(PH_SUFFIX))
+    .map((id) => id.slice(0, -PH_SUFFIX.length));
+  if (basis) {
+    const esc = basis.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const mitZaehler = new RegExp("^" + esc + "_\\d+$");
+    const treffer = kandidaten.find((p) => mitZaehler.test(p));
+    if (treffer) return treffer;
+  }
+  const eigene = kandidaten.filter((p) => hass?.entities?.[p + PH_SUFFIX]?.platform === PLATTFORM);
+  if (eigene.length === 1) return eigene[0];
+  if (eigene.length > 1 && basis) {
+    const treffer = eigene.find((p) => p.startsWith(basis));
+    if (treffer) return treffer;
+  }
+  return explizit ?? basis ?? null;
+}
+let $t=class extends at{setConfig(t){const c={...t};if(!c.device_name&&!c.entity_prefix)throw new Error("device_name or entity_prefix is required");this._config={image_variant:"transparent",...c}}get _prefix(){return aufloesenPrefix(this._config,this.hass)??""}getCardSize(){return 6}_entity(t){return this.hass?.states[`${this._prefix}${t}`]}_state(t){const s=this._entity(t)?.state;return s&&"unavailable"!==s&&"unknown"!==s?s:"—"}_binaryEntity(t){return this.hass?.states[`${this._prefix.replace(/^sensor\./,"binary_sensor.")}${t}`]}_isOn(t){return"on"===this._binaryEntity(t)?.state}get _imagePath(){const e=this._config.image_variant??"transparent";return gt[e]??gt.transparent}get _flowActive(){return this._isOn("_durchfluss")}_v(t){return this._config[t]??(xt.type1??{})[t]??_t[t]}_togglePlug(e){const t=e?.currentTarget?.dataset?.entity||this._config.plug_entity_rx||this._config.plug_entity;t&&this.hass&&this.hass.callWS({type:"call_service",domain:t.split(".")[0],service:"toggle",target:{entity_id:t}})}_numId(s){return this._prefix.replace(/^sensor\./,"number.")+s}_swId(s){return this._prefix.replace(/^sensor\./,"switch.")+s}_biId(s){return this._prefix.replace(/^sensor\./,"binary_sensor.")+s}_openSettings(e){e?.stopPropagation();this._settingsOpen=true;this.requestUpdate()}_closeSettings(e){e?.stopPropagation();this._settingsOpen=false;this.requestUpdate()}_stopProp(e){e.stopPropagation()}_setNumber(e){const t=e.currentTarget,id=t.dataset.entity,v=parseFloat(t.value);if(!isNaN(v))this.hass.callService("number","set_value",{entity_id:id,value:v})}_toggleSw(e){const t=e.currentTarget,id=t.dataset.entity,on=t.checked;this.hass.callService("switch",on?"turn_on":"turn_off",{entity_id:id})}_numberRow(label,suffix,icon){const id=this._numId(suffix),ent=this.hass.states[id];if(!ent)return V`<div class="settings-row missing"><span><ha-icon icon="${icon||"mdi:alert"}"></ha-icon>${label}</span><em>fehlt: ${id}</em></div>`;const a=ent.attributes||{},mn=a.min??0,mx=a.max??100,st=a.step??0.01,un=a.unit_of_measurement||"";return V`<div class="settings-row"><span class="settings-label"><ha-icon icon="${icon||"mdi:tune"}"></ha-icon>${label}</span><div class="settings-num"><input type="range" min="${mn}" max="${mx}" step="${st}" .value="${ent.state}" data-entity="${id}" @change="${this._setNumber}" @input="${this._setNumber}" /><input type="number" min="${mn}" max="${mx}" step="${st}" .value="${ent.state}" data-entity="${id}" @change="${this._setNumber}" /><span class="settings-unit">${un}</span></div></div>`}_switchRow(label,suffix,icon){const id=this._swId(suffix),ent=this.hass.states[id];if(!ent)return V`<div class="settings-row missing"><span><ha-icon icon="${icon||"mdi:alert"}"></ha-icon>${label}</span><em>fehlt: ${id}</em></div>`;const on=ent.state==="on";return V`<div class="settings-row"><span class="settings-label"><ha-icon icon="${icon||"mdi:toggle-switch-outline"}"></ha-icon>${label}</span><label class="settings-toggle"><input type="checkbox" .checked="${on}" data-entity="${id}" @change="${this._toggleSw}" /><span class="slider-track"></span></label></div>`}render(){if(!this._config||!this.hass)return I;const t=this._state("_ph"),e="—"!==t?parseFloat(t).toFixed(1).replace(".",","):"—",i=this._state("_orp_redox"),s="—"!==i?Math.round(parseFloat(i)).toString():"—",o=this._state("_ph_firmware"),r=this._isOn("_ph_dosierpumpe"),n=this._isOn("_chlor_dosierpumpe"),a=this._flowActive,l=ft[this._v("pump_style")??"arrow"],cPh=this._config.plug_entity_ph,hPh=!!cPh&&"on"===this.hass.states[cPh]?.state,cRx=this._config.plug_entity_rx||this._config.plug_entity,hRx=!!cRx&&"on"===this.hass.states[cRx]?.state,p=this._v("water_speed")??100,d=this._v("pump_speed")??100,u=Math.max(.01,p/100),_=1.8/u,g=2.4/u,f=1.4/u,$=0===p||!a?"paused":"running",m=1/Math.max(.01,d/100),v="left"===(this._v("water_direction")??"right"),y=this._v("value_color")??"white",w=!1!==(this._v("value_box")??!0),b=!1!==(this._v("value_labels")??!0),showSettings=!1!==(this._config.show_settings??!0),settingsOpen=!!this._settingsOpen,pfad=this._prefix,phId=pfad?pfad+"_ph":"",phEnt=phId?this.hass.states[phId]:null,stoerung=phEnt?(t==="—"?{art:"offline",icon:"mdi:alert-octagon",text:"Anlage offline — Werte nicht aktuell"}:null):{art:"fehlt",icon:"mdi:help-rhombus-outline",text:`Sensor „${phId||"sensor.…_ph"}“ nicht gefunden — bitte Namen der Dosieranlage oder Entity-Präfix in den Card-Einstellungen prüfen`};return V`
       <ha-card>
-        <div class="card-wrap ${isOffline?'offline-dim':''}">
-          ${isOffline?V`<div class="offline-banner"><ha-icon icon="mdi:alert-octagon"></ha-icon>Anlage offline — Werte nicht aktuell</div>`:I}
+        ${stoerung?V`<div class="offline-banner ${stoerung.art}"><ha-icon icon="${stoerung.icon}"></ha-icon>${stoerung.text}</div>`:I}
+        <div class="card-wrap ${stoerung&&!settingsOpen?'offline-dim':''}">
           <img class="bg" src="${this._imagePath}" alt="Dosieranlage" />
 
           <!-- Firmware -->
@@ -117,12 +162,6 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
             ${b?V`<span class="unit">RX</span>`:I}
           </div>
 
-          <!-- Cloud-Status oben links -->
-          ${showCloud&&cloudEnt?V`
-            <div class="cloud-badge ${cloudOn?"on":"off"}" title="Cloud-Verbindung: ${cloudOn?"verbunden":"getrennt"}">
-              <ha-icon icon="${cloudOn?"mdi:cloud":"mdi:cloud-off-outline"}"></ha-icon>
-            </div>
-          `:I}
 
           <!-- Einstellungs-Zahnrad oben rechts -->
           ${showSettings?V`
@@ -177,19 +216,19 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
     .card-wrap { position: relative; width: 100%; line-height: 0; }
     .bg { width: 100%; height: auto; display: block; }
     .offline-banner {
-      position: absolute; top: 0; left: 0; right: 0;
+      position: relative;
       background: linear-gradient(180deg, rgba(220,53,69,0.96), rgba(176,42,55,0.96));
       color: #fff;
-      font-size: 0.92em; font-weight: 700;
+      font-size: 0.92em; font-weight: 700; line-height: 1.35;
       letter-spacing: 0.3px;
       padding: 9px 12px 9px 12px;
       text-align: center;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.35);
-      z-index: 30;
+      border-radius: 12px 12px 0 0;
       display: flex; align-items: center; justify-content: center; gap: 8px;
       --mdc-icon-size: 20px;
     }
-    .offline-dim { opacity: 0.4; filter: grayscale(0.6); pointer-events: none; }
+    .offline-banner.fehlt { background: linear-gradient(180deg, rgba(198,124,12,0.96), rgba(160,100,8,0.96)); }
+    .offline-dim { opacity: 0.4; filter: grayscale(0.6); }
 
     /* Firmware */
     .firmware-badge {
@@ -241,17 +280,6 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
     .value-box.no-bg { background: none; border: none; backdrop-filter: none; padding: 2px 6px; }
     .val { font-size: 1.5em; font-weight: 700; color: var(--val-color, #fff); }
     .unit { font-size: 0.85em; font-weight: 600; color: var(--val-color, #fff); opacity: 0.7; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
-
-    /* Cloud Badge */
-    .cloud-badge {
-      position: absolute; top: 6px; left: 6px;
-      padding: 4px; border-radius: 50%;
-      background: rgba(0,0,0,0.45); --mdc-icon-size: 20px;
-      line-height: 0; pointer-events: none;
-      transition: all 0.3s;
-    }
-    .cloud-badge.on { color: #8bd3ff; }
-    .cloud-badge.off { color: #ff6b6b; opacity: 0.85; }
 
     /* Gear Badge */
     .gear-badge {
@@ -383,7 +411,7 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
     .settings-toggle input:checked + .slider-track:before {
       transform: translateX(20px);
     }
-  `,t([dt({attribute:!1})],$t.prototype,"hass",void 0),t([ut()],$t.prototype,"_config",void 0),$t=t([ct("tomtut-pool-dosing-vigipool-card")],$t);let mt=class extends at{setConfig(t){this._config={...t};if(!this._config.device_name&&this._config.entity_prefix){this._config.device_name=this._config.entity_prefix.replace(/^sensor\./,"").replace(/_/g," ").replace(/\b\w/g,c=>c.toUpperCase())}}_ev(t){const p=xt.type1??{};return this._config[t]??p[t]??_t[t]}_changed(t){const e=t.target,i=e.dataset.key;let s;if(s="range"===e.type?parseFloat(e.value):"checkbox"===e.type?e.checked:e.value,"device_name"===i){this._config={...this._config,device_name:s,entity_prefix:"sensor."+s.toLowerCase().replace(/\s+/g,"_")},this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:this._config}}));return}this._config={...this._config,[i]:s},this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:this._config}}))}_slider(t,e,i,s,o="%",r=1){const n=this._ev(e)??100;return V`
+  `,t([dt({attribute:!1})],$t.prototype,"hass",void 0),t([ut()],$t.prototype,"_config",void 0),$t=t([ct("tomtut-pool-dosing-vigipool-card")],$t);let mt=class extends at{setConfig(t){this._config={...t};if(!this._config.device_name&&this._config.entity_prefix){this._config.device_name=this._config.entity_prefix.replace(/^sensor\./,"").replace(/_/g," ").replace(/\b\w/g,c=>c.toUpperCase())}}_ev(t){const p=xt.type1??{};return this._config[t]??p[t]??_t[t]}_changed(t){const e=t.target,i=e.dataset.key;let s;if(s="range"===e.type?parseFloat(e.value):"checkbox"===e.type?e.checked:e.value,"device_name"===i){const alt=this._config.device_name||"",c={...this._config,device_name:s},erzeugt=["sensor."+alt.toLowerCase().replace(/\s+/g,"_"),"sensor."+haSlugify(alt)];if(c.entity_prefix&&erzeugt.includes(c.entity_prefix))delete c.entity_prefix;this._config=c,this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:this._config}}));return}if("entity_prefix"===i){const c={...this._config};s&&s.trim()?c.entity_prefix=s.trim():delete c.entity_prefix;this._config=c,this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:this._config}}));return}this._config={...this._config,[i]:s},this.dispatchEvent(new CustomEvent("config-changed",{detail:{config:this._config}}))}_slider(t,e,i,s,o="%",r=1){const n=this._ev(e)??100;return V`
       <div class="slider-row">
         <span class="slider-label">${t}</span>
         <input type="range" min="${i}" max="${s}" step="${r}"
@@ -405,6 +433,10 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
         <label>Name der Dosieranlage
           <input type="text" .value="${this._config.device_name||""}" data-key="device_name" @input="${this._changed}" placeholder="Orpheo VP Pool Dosieranlage" />
           <small>Gib hier den <b>Namen</b> deiner Dosieranlage ein — genau so wie du ihn bei der Integration vergeben hast. Beispiel: <b>Orpheo VP Pool Dosieranlage</b></small>
+        </label>
+        <label>Entity-Präfix (optional)
+          <input type="text" .value="${this._config.entity_prefix||""}" data-key="entity_prefix" @input="${this._changed}" placeholder="automatisch" />
+          <small>Normalerweise <b>leer lassen</b> — die Card findet die Sensoren selbst. Nur ausfüllen, wenn oben die Meldung „Sensor nicht gefunden“ erscheint: dann hier die Entity-ID deines pH-Sensors <b>ohne</b> das abschliessende <code>_ph</code> eintragen, z.B. <code>sensor.orpheo_vp_pool_dosieranlage</code></small>
         </label>
         <label>Steckdose pH (optional)
           <input type="text" .value="${this._config.plug_entity_ph||""}" data-key="plug_entity_ph" @input="${this._changed}" placeholder="z.B. switch.dosierpumpe_ph" />
@@ -430,7 +462,6 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
         </label>
 
         ${this._section("Badges anzeigen",V`
-          ${this._toggle("☁ Cloud-Status oben links","show_cloud",!0)}
           ${this._toggle("⚙ Einstellungs-Zahnrad oben rechts","show_settings",!0)}
         `)}
 
@@ -556,4 +587,4 @@ const ct=t=>(e,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(t,e)}
     .slider-row select { flex: 2; padding: 6px; border: 1px solid var(--divider-color, #ccc); border-radius: 4px; font-size: 13px; }
     .slider-val { width: 40px; text-align: right; font-size: 13px; font-weight: 600; color: var(--primary-color); }
     .toggle-row input[type="checkbox"] { width: 18px; height: 18px; }
-  `,t([dt({attribute:!1})],mt.prototype,"hass",void 0),t([ut()],mt.prototype,"_config",void 0),mt=t([ct("tomtut-pool-dosing-vigipool-card-editor")],mt),window.customCards=window.customCards||[],window.customCards.push({type:"tomtut-pool-dosing-vigipool-card",name:"TomTuT Pool Dosing Vigipool",description:"Visualisierung der Vigipool Orpheo VP Dosieranlage (Phileo VP + Oxeo VP) mit animierten Pumpen und Wasserfluss",preview:!0,documentationURL:"https://github.com/TomTuTHub/tomtut-pool-dosing-vigipool-card"});export{$t as TomtutPoolDosingCard,mt as TomtutPoolDosingCardEditor};
+  `,t([dt({attribute:!1})],mt.prototype,"hass",void 0),t([ut()],mt.prototype,"_config",void 0),mt=t([ct("tomtut-pool-dosing-vigipool-card-editor")],mt),window.customCards=window.customCards||[],window.customCards.push({type:"tomtut-pool-dosing-vigipool-card",name:"TomTuT Pool Dosing Vigipool",description:"Visualisierung der Vigipool Orpheo VP Dosieranlage (Phileo VP + Oxeo VP) mit animierten Pumpen und Wasserfluss",preview:!0,documentationURL:"https://github.com/TomTuTHub/tomtut-pool-dosing-vigipool-card"});export{$t as TomtutPoolDosingCard,mt as TomtutPoolDosingCardEditor,haSlugify,aufloesenPrefix};

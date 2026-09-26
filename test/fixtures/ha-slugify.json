@@ -1,0 +1,58 @@
+{
+  "_erzeugt_mit": "python-slugify, slugify(name, separator='_') - exakt das, was homeassistant.util.slugify benutzt",
+  "_zweck": "Gegenprobe fuer haSlugify() in der Card. Nicht von Hand pflegen, mit tools/ha-slugify-fixture.py neu erzeugen.",
+  "faelle": [
+    {
+      "name": "Orpheo VP Pool Dosieranlage",
+      "ha_slug": "orpheo_vp_pool_dosieranlage"
+    },
+    {
+      "name": "Pool",
+      "ha_slug": "pool"
+    },
+    {
+      "name": "Pool Dosieranlage Sued",
+      "ha_slug": "pool_dosieranlage_sued"
+    },
+    {
+      "name": "Pool Dosieranlage Süd",
+      "ha_slug": "pool_dosieranlage_sud"
+    },
+    {
+      "name": "Vigipool-Dosieranlage",
+      "ha_slug": "vigipool_dosieranlage"
+    },
+    {
+      "name": "Poolsteuerung (Garten)",
+      "ha_slug": "poolsteuerung_garten"
+    },
+    {
+      "name": "Dosieranlage 2.0",
+      "ha_slug": "dosieranlage_2_0"
+    },
+    {
+      "name": "Große Dosieranlage",
+      "ha_slug": "grosse_dosieranlage"
+    },
+    {
+      "name": "Thomas' Pool",
+      "ha_slug": "thomas_pool"
+    },
+    {
+      "name": "  Pool   Dosieranlage  ",
+      "ha_slug": "pool_dosieranlage"
+    },
+    {
+      "name": "Dosieranlage_Nord",
+      "ha_slug": "dosieranlage_nord"
+    },
+    {
+      "name": "Pöol Äußen",
+      "ha_slug": "pool_aussen"
+    },
+    {
+      "name": "Pool/Technik",
+      "ha_slug": "pool_technik"
+    }
+  ]
+}
