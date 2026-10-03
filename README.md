@@ -111,7 +111,7 @@ Meldung trotzdem stehen:
 3. Im Card-Editor unter **Entity-Präfix** alles **ohne** das abschließende `_ph` eintragen —
    hier also `sensor.orpheo_vp_pool_dosieranlage`
 
-Zeigt die Entity dort zwar existiert, aber `unavailable` oder `unknown` an, liegt es nicht an der
+Existiert die Entity dort zwar, zeigt aber `unavailable` oder `unknown`, liegt es nicht an der
 Card: dann empfängt die Integration selbst gerade keine Daten — die Card meldet in dem Fall
 "Anlage offline".
 
